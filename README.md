@@ -1,30 +1,39 @@
+### A-LOAM, LiDAR-카메라 융합, KNN을 이용한 객체 분류 (Ubuntu 20.04, ROS Noetic)
 
-A-LOAM과 lidar-camera-fusion, KNN을 이용한 객체 분류
-ubuntu-20.04 ROS-noetic
+#### 문의 사항: peicai69@naver.com
 
-문의 사항 : peicai69@naver.com
+---
 
-먼저, 이 프로그램을 제작 될 수 있었던건, 아래의 분들 덕분입니다.
+먼저, 이 프로그램이 제작될 수 있었던 것은 아래의 기여자들 덕분입니다:
 
-A-LOAM(Modifier: Tong Qin, Shaozu Cao)
-https://github.com/HKUST-Aerial-Robotics/A-LOAM
+- **A-LOAM (Modifier: Tong Qin, Shaozu Cao)**  
+  [https://github.com/HKUST-Aerial-Robotics/A-LOAM](https://github.com/HKUST-Aerial-Robotics/A-LOAM)
 
-turtlebot3_velodyne(Tevhit Karsli)
-https://github.com/Tevhit/pcl_velodyne_ws/tree/main/src/turtlebot3_velodyne
+- **Turtlebot3 Velodyne (Tevhit Karsli)**  
+  [https://github.com/Tevhit/pcl_velodyne_ws/tree/main/src/turtlebot3_velodyne](https://github.com/Tevhit/pcl_velodyne_ws/tree/main/src/turtlebot3_velodyne)
 
+---
 
+### 프로그램 실행 전 준비 사항
 
-실행하기에 앞서, 준비해야합니다.
+#### Step 1: 종속성 프로그램 설치
 
-첫번째는 종속성 프로그램을 설치하세요.
-https://emanual.robotis.com/docs/en/platform/turtlebot3/quick-start (출처)
+아래 링크를 참조하여 설치를 진행하세요:  
+[https://emanual.robotis.com/docs/en/platform/turtlebot3/quick-start](https://emanual.robotis.com/docs/en/platform/turtlebot3/quick-start)
 
+다음 명령어를 실행합니다:
+
+```bash
 $ sudo apt update
 $ sudo apt upgrade
 $ wget https://raw.githubusercontent.com/ROBOTIS-GIT/robotis_tools/master/install_ros_noetic.sh
 $ chmod 755 ./install_ros_noetic.sh 
 $ bash ./install_ros_noetic.sh
+```
 
+이후, 아래의 ROS 패키지를 설치하세요:
+
+```bash
 $ sudo apt-get install ros-noetic-joy ros-noetic-teleop-twist-joy \
   ros-noetic-teleop-twist-keyboard ros-noetic-laser-proc \
   ros-noetic-rgbd-launch ros-noetic-rosserial-arduino \
@@ -33,63 +42,119 @@ $ sudo apt-get install ros-noetic-joy ros-noetic-teleop-twist-joy \
   ros-noetic-move-base ros-noetic-urdf ros-noetic-xacro \
   ros-noetic-compressed-image-transport ros-noetic-rqt* ros-noetic-rviz \
   ros-noetic-gmapping ros-noetic-navigation ros-noetic-interactive-markers
-  
+```
+
+추가로 다음 종속성들을 설치하세요:
+
+```bash
 $ sudo apt install ros-noetic-dynamixel-sdk
 $ sudo apt install ros-noetic-turtlebot3-msgs
 $ sudo apt install ros-noetic-turtlebot3
+$ sudo apt install gnome-terminal
+$ pip install open3d
+```
 
-export TURTLEBOT3_MODEL=waffle    (~/.bashrc)
+`.bashrc` 파일을 수정하여 Turtlebot3 모델을 설정하세요:
 
-sudo apt install gnome-terminal
-pip install open3d
+```bash
+export TURTLEBOT3_MODEL=waffle
+```
+
+마지막으로, `/opt/ros/noetic/lib/python3/dist-packages/ros_numpy/point_cloud2.py` 파일에서 아래 코드를 수정합니다:
+
+```python
+# 기존 코드
+def get_xyz_points(cloud_array, remove_nans=True, dtype=np.float):
+
+# 수정된 코드
+def get_xyz_points(cloud_array, remove_nans=True, dtype=np.float64):
+```
+
+#### Step 2: 파일 수정
+
+1. **.pcd 파일 생성**  
+   직접 .pcd 파일을 생성하고 싶다면, `create_data/src/run_creat_data.py` 파일에서 `sdf_model` 변수를 수정하세요.  
+   이 변수에 대한 예시는 `sdf/block.sdf` 파일에 있습니다.
+
+2. **디렉토리 경로 수정**  
+   `pointcombine/src/com3.py` 파일에서 아래 줄을 본인의 디렉토리 경로에 맞게 수정하세요:
+
+   - 59번째 줄: `directory = "/home/<username>/catkin_ws/src/data_mach/green_box"`
+   - 64번째 줄과 67번째 줄도 동일하게 수정하세요.
+
+3. **프로그램 실행**  
+   프로그램을 실행하고 싶다면, `mach_learn/src/knn_run.py` 파일에서 `data_dir` 경로를 수정하세요:
+
+   - 149번째 줄: `data_dir = '/home/<username>/catkin_ws/src'`
+
+---
+
+### Step 3: 프로그램 실행 (6개의 터미널 필요)
+
+결과값을 얻기 위해 프로그램을 실행하려면, 다음 단계를 따르세요:
+
+1. **첫 번째 터미널**:  
+   빈 월드를 실행합니다:
+
+   ```bash
+   roslaunch turtlebot3_velodyne_gazebo turtlebot3_empty_world.launch
+   ```
+
+   그 후, 주변 블럭을 복사하여 빨간 점으로 붙여넣기 합니다.
+
+2. **두 번째 터미널**:  
+   KNN 분류 스크립트를 실행합니다:
+
+   ```bash
+   rosrun mach_learn knn_run.py
+   ```
+
+   버그가 발생하면 `data_study` 경로를 확인하고, 파일 권한을 제대로 주었는지 확인하세요 (`chmod` 사용).
+
+3. **세 번째 터미널**:  
+   LiDAR-카메라 캘리브레이션 스크립트를 실행합니다:
+
+   ```bash
+   rosrun lidar_camera_calibration lidar_camera_calibration.py
+   ```
+
+   빨간 점으로 제대로 붙여넣기를 했다면, 버그는 발생하지 않습니다.
+
+4. **네 번째 터미널**:  
+   데이터 생성 스크립트를 실행합니다:
+
+   ```bash
+   rosrun create_data run.py
+   ```
+
+5. **다섯 번째 터미널**:  
+   포인트 결합 실행 파일을 실행합니다:
+
+   ```bash
+   roslaunch pointcombine run.launch
+   ```
+
+6. **여섯 번째 터미널**:  
+   로봇의 모션 제어를 위한 `/cmd_vel` 토픽을 퍼블리시하고, `Ctrl + C`를 누른 후 다음 서비스를 실행합니다:
+
+   ```bash
+   rostopic pub /cmd_vel geometry_msgs/Twist "linear:
+     x: 0.3
+     y: 0.0
+     z: 0.0
+   angular:
+     x: 0.0
+     y: 0.0
+     z: 0.12"
+   ```
+
+   이후, 다음 서비스를 실행하세요:
+
+   ```bash
+   rosservice call /create_data_start
+   ```
 
 
-# opt/ros/noetic/lib/python3/dist-packages/ros_numpy/point_cloud2.py 
-# def get_xyz_points(cloud_array, remove_nans=True, dtype=np.float): # 기존 코드
-# def get_xyz_points(cloud_array, remove_nans=True, dtype=np.float64):  # 수정된 코드으로 변경하십쇼
-
-
-두번째는 일부 파일 수정이 필요합니다.
-
-만약, 당신이 .pcd파일을 직접 만들기 원한다면
-create_data/src/run_creat_data.py  에서 변수 sdf_model를 직접 수정해야합니다.
-이 변수는 sdf/block.sdf 파일에 예시가 있습니다.
-pointcombine/src/com3.py 에서 59 directory = "/home/<username>/catkin_ws/src/data_mach/green_box"과 64, 67 줄을 직접 수정하십쇼
-
-
-만약, 실행만 한다면
-mach_learn/src/knn_run.py에서 149  data_dir = '/home/<username>/catkin_ws/src' 을 수정하십쇼
-
-
-
-세번째, 실행은 최소 6개의 터미널이 필요합니다.
-	당신이 실행만 하여 결과값을 얻고 싶다면
-	첫번째 터미널에서 roslaunch turtlebot3_velodyne_gazebo turtlebot3_empty_world.launch
-	을 실행후, 주변 블럭에서 복사를 하여 빨간색 점으로 붙여놓기를 하세요.
-	
-	두번째 터미널에서 rosrun mach_learn knn_run.py
-	버그가 난다면 data_study 경로를 확인하시고, 파일에 권한(chmod)를 주었는지 확인하세요.
-	
-	세번째 터미널에서는 rosrun lidar_camera_calibration lidar_camera_calibration.py
-	만약 빨간색 점으로 붙여놓기를 잘했다면 버그는 발생하지 않을 것입니다.
-	
-	네번째 터미널에서는 rosrun create_data run.py
-
-	다섯번째 터미널에서는 roslaunch pointcombine run.launch
-
-	여섯번째 터미널에서는 rostopic pub /cmd_vel geometry_msgs/Twist "linear:
-			  x: 0.3
-			  y: 0.0
-			  z: 0.0
-			angular:
-			  x: 0.0
-			  y: 0.0
-			  z: 0.12"
-	을 먼저 실행 후, crtl + C를 누른 후에, rosservice call /create_data_start
-
-
-====================================================================================================================================================================
-English
 
 ### Object Classification using A-LOAM, LiDAR-Camera Fusion, and KNN on Ubuntu 20.04 with ROS Noetic
 
