@@ -146,7 +146,7 @@ if __name__ == "__main__":
     rospy.init_node('knn_classifier')
 
     # 학습 데이터 준비
-    data_dir = '/home/kriso/sf_ws/src/data_mach'
+    data_dir = '/home/<username>/catkin_ws/src'
     study_file = os.path.join(data_dir, 'data_study')
     knn, labels = load_or_train_data(data_dir, study_file)
 
