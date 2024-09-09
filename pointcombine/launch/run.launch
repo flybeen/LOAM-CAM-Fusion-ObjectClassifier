@@ -1,0 +1,13 @@
+<launch>
+    <!-- Launch com1.py -->
+    <node name="com1_node" pkg="pointcombine" type="com1.py" output="screen">
+    </node>
+
+    <!-- Launch com2.py -->
+    <node name="com2_node" pkg="pointcombine" type="com2.py" output="screen">
+    </node>
+
+    <!-- Launch com3.py -->
+    <node name="com3_node" pkg="pointcombine" type="com3_topic_pub.py" output="screen">
+    </node>
+</launch>

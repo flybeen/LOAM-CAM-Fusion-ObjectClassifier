@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>mach_learn</name>
+  <version>0.0.1</version>
+  <description>The mach_learn package</description>
+
+  <maintainer email="kriso@todo.todo">kriso</maintainer>
+  <license>MIT</license>  <!-- 라이선스를 MIT로 설정 -->
+
+  <!-- 패키지의 필요 의존성들 추가 -->
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>sensor_msgs</build_depend>
+  <build_depend>std_msgs</build_depend>
+
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>sensor_msgs</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>ros_numpy</exec_depend>
+
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+  </export>
+</package>
