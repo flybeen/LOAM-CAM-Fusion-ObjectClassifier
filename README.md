@@ -1,3 +1,11 @@
+
+[![Video Label](http://img.youtube.com/vi/56GsGXoVQ/0.jpg)](https://youtu.be/56GsGXoVQ)
+
+
+
+
+
+
 ### A-LOAM, LiDAR-카메라 융합, KNN을 이용한 객체 분류 (Ubuntu 20.04, ROS Noetic)
 
 #### 문의 사항: peicai69@naver.com
