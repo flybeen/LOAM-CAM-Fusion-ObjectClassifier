@@ -56,7 +56,7 @@ class PointCloudSaver:
         point_cloud.points = o3d.utility.Vector3dVector(xyz)
         point_cloud.colors = o3d.utility.Vector3dVector(rgb)
 
-        directory = "/home/kriso/sf_ws/src/data_mach/green_box"
+        directory = "/home/<username>/catkin_ws/src/data_mach/green_box"
         if not os.path.exists(directory):
             os.makedirs(directory)
 
