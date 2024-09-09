@@ -1,0 +1,24 @@
+<package format="2">
+  <name>create_data</name>
+  <version>0.0.0</version>
+  <description>The create_data package for handling model spawning and data collection</description>
+
+  <maintainer email="kriso@todo.todo">kriso</maintainer>
+  <license>BSD</license>  <!-- TODO에서 BSD로 수정 -->
+
+  <!-- Optional author tag -->
+  <author email="kriso@todo.todo">kriso</author>
+
+  <!-- Dependencies -->
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_srvs</build_depend>
+  <build_depend>gazebo_msgs</build_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_srvs</exec_depend>
+  <exec_depend>gazebo_msgs</exec_depend>
+
+  <!-- The export tag contains other, unspecified, tags -->
+  <export>
+  </export>
+</package>
