@@ -29,9 +29,10 @@ include_directories(
 #############
 
 ## Mark Python scripts for installation
-## This will install the Python script 'knn_run.py' located in 'src/' to the appropriate ROS package bin directory
+## Install both KNN and CNN scripts
 catkin_install_python(PROGRAMS
-  src/knn_run.py
+  src/knn_run.py  # 기존 KNN 스크립트
+  src/pcl_cnn_run.py  # 새로 추가된 CNN 스크립트
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
@@ -42,4 +43,4 @@ catkin_install_python(PROGRAMS
 # Add gtest based cpp test target and link libraries (if using C++)
 # catkin_add_gtest(${PROJECT_NAME}-test test/test_mach_learn.cpp)
 
-# Add folders to be
+# Add folders to be installed
