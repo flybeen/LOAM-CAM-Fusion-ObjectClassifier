@@ -1,5 +1,10 @@
 #!/usr/bin/env python
 
+############################################################
+# com3_topic_pub.py에서 final_result으로 토픽을 보내는 경우가 아닌
+# .pcd 파일을 저장하는 코드 -> 학습데이터를 만들때 사용
+# 그래서 com3_topic_pub.py와 거의 유사
+############################################################
 import rospy
 import sensor_msgs.point_cloud2 as pc2
 from sensor_msgs.msg import PointCloud2, PointField
@@ -48,6 +53,7 @@ class PointCloudSaver:
         if processed_points:
             self.save_to_pcd(processed_points)
 
+    
     def save_to_pcd(self, points):
         # 포인트 클라우드를 open3d로 변환 (XYZ + RGB)
         point_cloud = o3d.geometry.PointCloud()
@@ -56,7 +62,7 @@ class PointCloudSaver:
         point_cloud.points = o3d.utility.Vector3dVector(xyz)
         point_cloud.colors = o3d.utility.Vector3dVector(rgb)
 
-        directory = "/home/<username>/catkin_ws/src/data_mach/green_box"
+        directory = "/home/kriso/sf_ws/src/data_mach/green_box"
         if not os.path.exists(directory):
             os.makedirs(directory)
 
