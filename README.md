@@ -58,8 +58,10 @@ $ sudo apt-get install ros-noetic-joy ros-noetic-teleop-twist-joy \
 $ sudo apt install ros-noetic-dynamixel-sdk
 $ sudo apt install ros-noetic-turtlebot3-msgs
 $ sudo apt install ros-noetic-turtlebot3
-$ sudo apt install gnome-terminal
+$ sudo apt-get install ros-noetic-ros-numpy
 $ pip install open3d
+$ sudo apt install gnome-terminal
+$ pip install torch torchvision torchaudio
 ```
 
 `.bashrc` 파일을 수정하여 Turtlebot3 모델을 설정하세요:
